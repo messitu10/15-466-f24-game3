@@ -17,30 +17,59 @@ struct PlayMode : Mode {
 	virtual void update(float elapsed) override;
 	virtual void draw(glm::uvec2 const &drawable_size) override;
 
+	bool check_hit();
+	void fire();
+	void set_enemy_spawn_locations();
+	void spawn_enemy();	
+	void play_enemy_shooting_sound();
+	
+
 	//----- game state -----
 
 	//input tracking:
 	struct Button {
 		uint8_t downs = 0;
 		uint8_t pressed = 0;
-	} left, right, down, up;
+	} left, right, down, up, leftMouse;
 
 	//local copy of the game scene (so code can change it during gameplay):
 	Scene scene;
 
-	//hexapod leg to wobble:
-	Scene::Transform *hip = nullptr;
-	Scene::Transform *upper_leg = nullptr;
-	Scene::Transform *lower_leg = nullptr;
-	glm::quat hip_base_rotation;
-	glm::quat upper_leg_base_rotation;
-	glm::quat lower_leg_base_rotation;
-	float wobble = 0.0f;
+	Scene::Transform *gun = nullptr;
+	Scene::Transform *crosshair = nullptr;
 
-	glm::vec3 get_leg_tip_position();
+	Scene::Transform *enemy1 = nullptr;
+	Scene::Transform *enemy2 = nullptr;
+	Scene::Transform *enemy3 = nullptr;
+	Scene::Transform *enemy4 = nullptr;
+	Scene::Transform *enemy5 = nullptr;
+	Scene::Transform *enemy6 = nullptr;
+	Scene::Transform *enemy7 = nullptr;
+	Scene::Transform *enemy8 = nullptr;
 
-	//music coming from the tip of the leg (as a demonstration):
-	std::shared_ptr< Sound::PlayingSample > leg_tip_loop;
+	Scene::Transform *wall_1 = nullptr;
+	Scene::Transform *wall_2 = nullptr;
+	Scene::Transform *wall_3 = nullptr;
+	Scene::Transform *wall_4 = nullptr;
+	Scene::Transform *wall_5 = nullptr;
+	Scene::Transform *wall_6 = nullptr;
+	Scene::Transform *wall_7 = nullptr;
+	Scene::Transform *wall_8 = nullptr;
+
+	float countdown_timer;
+
+	std::vector<Scene::Transform*> enemies;
+	uint32_t current_enemy_index;
+
+	glm::vec3 gun_offset;
+	float gunshot_gap_time;
+	float enemy_gunshot_gap_time;
+
+	uint32_t score;
+
+	std::shared_ptr< Sound::PlayingSample > laser_gun_sound;
+	std::shared_ptr< Sound::PlayingSample > laser_hit_sound;
+	std::shared_ptr< Sound::PlayingSample > enemy_laser_gun_sound;
 	
 	//camera:
 	Scene::Camera *camera = nullptr;
